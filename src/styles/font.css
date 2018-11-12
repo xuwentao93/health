@@ -1,0 +1,27 @@
+/* 这个字体有用到，适合做标题 */
+@font-face{
+    font-family: "zhong shan";
+    src:url("./font/zhongShan.ttf")
+}
+
+/* 这个字体比较有趣，适合做次标题 */
+@font-face{
+    font-family: "time";
+    src:url("./font/time.ttf")
+}
+
+/* 文字：文字  适合作左边的文字 */
+@font-face{
+    font-family: "dictionary";
+    src:url("./font/dictionary.ttf")
+}
+
+@font-face{
+    font-family: "zhong qi han";
+    src:url("./font/钟齐翰墨毛笔.ttf");
+}
+
+@font-face{
+    font-family: "d";
+    src:url("./font/新蒂文征明体.ttf");
+}
