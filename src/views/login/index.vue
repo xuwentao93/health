@@ -35,7 +35,6 @@
 
 <script>
 import { login } from "@/api/login";
-import { nodeTest } from "@/api/test";
 import { removeUser, removeToken } from "@/utils/localStorage";
 import { mapMutations } from "vuex";
 import selfInput from "@/components/selfInput";

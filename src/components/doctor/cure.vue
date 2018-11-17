@@ -1,13 +1,16 @@
 <template>
   <div class="main">
-    <span class="username">患者用户名：</span>
+    <!-- <span class="username">患者用户名：</span>
     <self-input style='width:100px;height:24px;margin-bottom:20px;margin-right:20px;' v-model='username'>
     </self-input>
     <el-button type='primary' size='small' @click='checkCustom()'>检查用户</el-button>
     <span v-if='userInfo.name'>姓名：{{userInfo.name}}</span>
     <span v-if='userInfo.idnumber' class='idnumber'>身份证号码：{{userInfo.idnumber}}</span>
     <span v-if='errMsg' class='g-red'>用户不存在！</span>
-    <span class='g-red'>{{nameErr}}</span>
+    <span class='g-red'>{{nameErr}}</span> -->
+    选择时间段：<el-select v-model="time">
+      <el-option v-for="time in timeList" :key='time' :value='time'></el-option>
+    </el-select>
     <textarea cols="60" rows="10" placeholder="病人病情" v-model='illness' ref="textarea"></textarea>
     <span class='illnessErr'>{{illnessErr}}</span>
     <table>
@@ -39,7 +42,7 @@
         <td><self-data v-model='conclusion[n-1].time'></self-data></td>
         <td>
           <self-data v-model='conclusion[n-1].number' @numberLimit="numberLimit($event,n-1)" @input='sum(n-1)'>
-        </self-data></td>
+          </self-data></td>
         <td><self-data v-model='conclusion[n-1].price' @priceLimit='priceLimit($event,n-1)' 
         @input="sum(n-1)"></self-data></td>
         <td class='mount'><span v-show='conclusion[n-1].mount'>￥</span>{{conclusion[n-1].mount}}</td>
@@ -55,6 +58,7 @@ import selfInput from "@/components/selfInput";
 import { medicine, cureConclusion, checkCustom } from "@/api/doctor";
 import { setTimeout } from "timers";
 import { arrToObj } from "@/utils/arrs";
+import { timeList } from "@/config";
 export default {
   components: {
     selfData,
@@ -73,7 +77,9 @@ export default {
       errMsg: "",
       nameErr: "",
       illnessErr: "",
-      hidden: true
+      hidden: true,
+      time: "",
+      timeList
     };
   },
   methods: {
@@ -126,7 +132,8 @@ export default {
     close2(n) {
       const medicineList = this.$refs.medicineList;
       const num = medicineList.length / 10;
-      setTimeout(() => { //用setTimeout 实现下拉框出现失焦
+      setTimeout(() => {
+        //用setTimeout 实现下拉框出现失焦
         for (let i = num * n; i < num * n + num; i++) {
           if (document.activeElement.tagName == "DIV") return;
           else {
@@ -183,8 +190,7 @@ export default {
       this.conclusion[index].name = name;
       this.hidden = true;
       this.medicines = [];
-      document.getElementsByTagName("input")[index*5+1].focus();//让对应的输入框获得焦点。
-
+      document.getElementsByTagName("input")[index * 5 + 1].focus(); //让对应的输入框获得焦点。
     },
     cureConclusion() {
       if (!this.userInfo.name) {
@@ -245,8 +251,8 @@ div {
 .g-red {
   color: red;
 }
-.username{
-  color:#333
+.username {
+  color: #333;
 }
 .title td {
   text-align: center;

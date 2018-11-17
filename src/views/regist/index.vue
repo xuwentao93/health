@@ -148,48 +148,45 @@ export default {
       }
     },
     identifying() {
-      this.$nextTick(() => {
-        //加上$nextTick,否则当手机号被注册或者格式错误时直接点击按钮
-        //this.phoneErr出现了，该函数仍然执行了。
-        if (this.permission == false) {
-          return;
-        }
-        if (this.phone == "") {
-          this.phoneErr = "手机号不能为空！";
-          return;
-        } else if (this.phoneErr == "") {
-          let t = Math.floor(Math.random() * 10000);
-          if (t < 10) t = "000" + t;
-          else if (t < 100) t = "00" + t;
-          else if (t < 1000) t = "0" + t;
-          else t = "" + t;
-          this.checkIdentify = t;
-          this.phone = +this.phone;
-          console.log(this.checkIdentify);
-          identifying({
-            sid: "46f7f9e42752e6a89a5e11799b1f90fb",
-            token: "0e7bca95cbd8147117777046d6d4adfd",
-            appid: "949b1a0754ee48cbb6fa11fc244d295a",
-            templateid: "389651",
-            yzm: t,
-            yzmtel: +this.phone
+      if (this.permission == false) {
+        return;
+      }
+      if (this.phone == "") {
+        this.phoneErr = "手机号不能为空！";
+        return;
+      } else if (!this.phoneErr) return;
+      else if (this.phoneErr == "") {
+        let t = Math.floor(Math.random() * 10000);
+        if (t < 10) t = "000" + t;
+        else if (t < 100) t = "00" + t;
+        else if (t < 1000) t = "0" + t;
+        else t = "" + t;
+        this.checkIdentify = t;
+        this.phone = +this.phone;
+        console.log(this.checkIdentify);
+        identifying({
+          sid: "46f7f9e42752e6a89a5e11799b1f90fb",
+          token: "0e7bca95cbd8147117777046d6d4adfd",
+          appid: "949b1a0754ee48cbb6fa11fc244d295a",
+          templateid: "389651",
+          yzm: t,
+          yzmtel: +this.phone
+        })
+          .then(res => {
+            this.permission = false;
+            let n = 60; //定时
+            let t = setInterval(() => {
+              this.number = `${n}秒后可在次发送`;
+              n--;
+              if (n < 0) {
+                this.permission = true;
+                this.number = "发送手机验证码";
+                clearInterval(t);
+              }
+            }, 1000);
           })
-            .then(res => {
-              this.permission = false;
-              let n = 60; //定时
-              let t = setInterval(() => {
-                this.number = `${n}秒后可在次发送`;
-                n--;
-                if (n < 0) {
-                  this.permission = true;
-                  this.number = "发送手机验证码";
-                  clearInterval(t);
-                }
-              }, 1000);
-            })
-            .catch(err => console.log(err));
-        }
-      });
+          .catch(err => console.log(err));
+      }
     },
     regist() {
       if (!this.username) this.userErr = "用户名不能为空！";
@@ -211,33 +208,31 @@ export default {
         this.nameErr
       )
         return;
-      this.$nextTick(() => {
-        if (true) {
-          regist({
-            username: this.username,
-            password: this.password,
-            permission: "custom"
+      if (true) {
+        regist({
+          username: this.username,
+          password: this.password,
+          permission: "custom"
+        })
+          .then(res => {
+            const number = +res.data + 1;
+            registMsg({
+              name: this.name,
+              id: this.id,
+              tel: +this.phone,
+              number
+            }).then(res => {
+              console.log(res.data);
+              if (res.data == "success") {
+                alert("注册成功！");
+                this.setUser(this.username);
+                this.setToken("custom");
+                this.$router.push("/main");
+              }
+            });
           })
-            .then(res => {
-              const number = +res.data + 1;
-              registMsg({
-                name: this.name,
-                id: this.id,
-                tel: +this.phone,
-                number
-              }).then(res => {
-                console.log(res.data);
-                if (res.data == "success") {
-                  alert("注册成功！");
-                  this.setUser(this.username);
-                  this.setToken("custom");
-                  this.$router.push("/main");
-                }
-              });
-            })
-            .catch(err => console.log(err));
-        }
-      });
+          .catch(err => console.log(err));
+      }
     },
     toHome() {
       let t = confirm("确认要返回首页吗？");

@@ -12,4 +12,6 @@ export const regist = data => request.post('regist.php', data) // 注册接口�
 
 export const registMsg = data => request.post('registMsg.php', data) //第二个注册接口，用于往用户信息表添加信息
 
-export const doctorRegist = data => request.post('doctorRegist.php' ,data) //医生注册接口
+export const doctorRegist = data => request.post('doctorRegist.php', data) //医生注册
+
+export const checkHospital = () => request.post('checkHospital.php') //选择医院

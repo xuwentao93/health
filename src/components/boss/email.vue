@@ -11,6 +11,7 @@
         <span>身份证号码： {{msg.idnumber}}</span>
         <span>手机号： {{msg.tel}}</span>
         <span>就诊医院： {{msg.hospital}}</span>
+        <span>科室： {{msg.department}}</span>
         <span>医师证明： </span>
         <div><img :src="msg.level" class='prove'></div>
         <div>
@@ -46,7 +47,8 @@ export default {
             "name",
             "idnumber",
             "hospital",
-            "level"
+            "level",
+            "department"
           );
           this.msgs = res.data;
           this.msgs.forEach(index => {

@@ -30,8 +30,19 @@
         <span class='g-red'>*</span><span>医院：</span>
       </div>
       <div>
-        <self-input v-model='hospital'></self-input>
+        <el-select v-model='hospital'>
+          <el-option v-for="hospital in hospitals" :key="hospital[0]" :value="hospital[0]"></el-option>
+        </el-select>
         <span class="warn">{{hospitalErr}}</span>
+      </div>
+      <div>
+        <span class='g-red'>*</span><span>科室：</span>
+      </div>
+      <div>
+        <el-select v-model='department'>
+          <el-option v-for="department in departments" :key="department" :value="department"></el-option>
+        </el-select>
+        <span class="warn">{{departmentErr}}</span>
       </div>
       <div><span class='g-red'>*</span>手机号码：</div>
       <div>
@@ -79,7 +90,8 @@ import {
   checkUser,
   checkTel,
   doctorRegist,
-  registMsg
+  registMsg,
+  checkHospital
 } from "@/api/login";
 import { mapMutations } from "vuex";
 import { setInterval } from "timers";
@@ -112,7 +124,11 @@ export default {
       img: undefined,
       imgsrc: null,
       imgErr: "",
-      slideController: true
+      slideController: true,
+      hospitals: [],
+      departments: ["骨科", "外科", "内科", "神经科", "皮肤科"],
+      departmentErr: "",
+      department: ""
     };
   },
   methods: {
@@ -123,6 +139,9 @@ export default {
     handle() {
       this.$refs.img.click();
     },
+    /**
+     * @param {各种checkUser全部都是表单校验}
+     */
     checkUser() {
       const firstnameExp = /^[a-zA-Z]$/; //定义用户名正则表达式匹配规则
       const nameExp = /^[a-zA-Z_0-9]{6,12}$/;
@@ -182,55 +201,58 @@ export default {
         });
       }
     },
+    checkHospital() {
+      checkHospital()
+        .then(res => {
+          this.hospitals = res.data;
+        })
+        .catch(err => console.log(err));
+    },
     inspectIdentify() {
       if (this.identify == this.checkIdentify && this.identify != "") {
         this.identifyErr = "";
       }
     },
     identifying() {
-      this.$nextTick(() => {
-        //加上$nextTick,否则当手机号被注册或者格式错误时直接点击按钮
-        //this.phoneErr出现了，该函数仍然执行了。
-        if (this.permission == false) {
-          return;
-        }
-        if (this.phone == "") {
-          this.phoneErr = "手机号不能为空！";
-          return;
-        } else if (this.phoneErr == "") {
-          let t = Math.floor(Math.random() * 10000);
-          if (t < 10) t = "000" + t;
-          else if (t < 100) t = "00" + t;
-          else if (t < 1000) t = "0" + t;
-          else t = "" + t;
-          this.checkIdentify = t;
-          this.phone = +this.phone;
-          console.log(t);
-          identifying({
-            //短信验证码接口
-            sid: "46f7f9e42752e6a89a5e11799b1f90fb",
-            token: "0e7bca95cbd8147117777046d6d4adfd",
-            appid: "949b1a0754ee48cbb6fa11fc244d295a",
-            templateid: "389651",
-            yzm: t,
-            yzmtel: +this.phone
+      if (this.permission == false) {
+        return;
+      }
+      if (this.phone == "") {
+        this.phoneErr = "手机号不能为空！";
+        return;
+      } else if (this.phoneErr == "") {
+        let t = Math.floor(Math.random() * 10000);
+        if (t < 10) t = "000" + t;
+        else if (t < 100) t = "00" + t;
+        else if (t < 1000) t = "0" + t;
+        else t = "" + t;
+        this.checkIdentify = t;
+        this.phone = +this.phone;
+        console.log(t);
+        identifying({
+          //短信验证码接口
+          sid: "46f7f9e42752e6a89a5e11799b1f90fb",
+          token: "0e7bca95cbd8147117777046d6d4adfd",
+          appid: "949b1a0754ee48cbb6fa11fc244d295a",
+          templateid: "389651",
+          yzm: t,
+          yzmtel: +this.phone
+        })
+          .then(res => {
+            this.permission = false;
+            let n = 60; //定时
+            let t = setInterval(() => {
+              this.number = `${n}秒后可在次发送`;
+              n--;
+              if (n < 0) {
+                this.permission = true;
+                this.number = "发送手机验证码";
+                clearInterval(t);
+              }
+            }, 1000);
           })
-            .then(res => {
-              this.permission = false;
-              let n = 60; //定时
-              let t = setInterval(() => {
-                this.number = `${n}秒后可在次发送`;
-                n--;
-                if (n < 0) {
-                  this.permission = true;
-                  this.number = "发送手机验证码";
-                  clearInterval(t);
-                }
-              }, 1000);
-            })
-            .catch(err => console.log(err));
-        }
-      });
+          .catch(err => console.log(err));
+      }
     },
     doctorRegist() {
       if (!this.username) this.userErr = "用户名不能为空！";
@@ -238,9 +260,10 @@ export default {
       else if (!this.pwCheck) this.checkPwErr = "确认密码不能为空";
       else if (!this.name) this.nameErr = "姓名不能为空！";
       else if (!this.id) this.idErr = "身份证号码不能为空！";
+      else if (!this.hospital) this.hospitalErr = "医院不能为空！";
+      else if (!this.department) this.departmentErr = "科室不能为空！";
       else if (!this.phone) this.phoneErr = "手机号不能为空";
       else if (!this.identify) this.identifyErr = "验证码不能为空！";
-      else if (!this.hospital) this.hospitalErr = "医院不能为空！";
       else if (!this.img) this.imgErr = "图片还未上传！";
       else if (this.checkIdentify != this.identify)
         this.identifyErr = "验证码错误！";
@@ -253,41 +276,42 @@ export default {
         this.idErr ||
         this.nameErr ||
         this.hospitalErr ||
-        this.imgErr
+        this.imgErr ||
+        this.departmentErr
       )
         return;
-      this.$nextTick(() => {
-        let data = new FormData(); //formdata 可以上传文件
-        let username = this.username;
-        let password = this.password;
-        let name = this.name;
-        let id = this.id;
-        let tel = +this.phone;
-        let hospital = this.hospital;
-        let level = this.$refs.img.files[0];
-        let imgurl = level.name;
-        data.append("file", level);
-        data.append("username", username);
-        data.append("password", password);
-        data.append("name", name);
-        data.append("id", id);
-        data.append("tel", tel);
-        data.append("hospital", hospital);
-        data.append("level", level);
-        data.append("url", imgurl);
-        let url = "http://119.23.217.238/dist/saleApi/health/doctorregist.php";
-        let XHR = new XMLHttpRequest();
-        if (XHR) {
-          XHR.onreadystatechange = () => {
-            if (XHR.readyState == 4 && XHR.status == 200) {
-              alert("审核申请成功，请等待通知！");
-              this.$router.push("/");
-            }
-          };
-          XHR.open("POST", url);
-          XHR.send(data);
-        }
-      });
+      let data = new FormData(); //formdata 可以上传文件
+      let username = this.username;
+      let password = this.password;
+      let name = this.name;
+      let id = this.id;
+      let tel = +this.phone;
+      let hospital = this.hospital;
+      let department = this.department;
+      let level = this.$refs.img.files[0];
+      let imgurl = level.name;
+      data.append("file", level);
+      data.append("username", username);
+      data.append("password", password);
+      data.append("name", name);
+      data.append("id", id);
+      data.append("tel", tel);
+      data.append("department", department);
+      data.append("hospital", hospital);
+      data.append("level", level);
+      data.append("url", imgurl);
+      let url = "http://119.23.217.238/dist/saleApi/health/doctorregist.php";
+      let XHR = new XMLHttpRequest();
+      if (XHR) {
+        XHR.onreadystatechange = () => {
+          if (XHR.readyState == 4 && XHR.status == 200) {
+            alert("审核申请成功，请等待通知！");
+            this.$router.push("/");
+          }
+        };
+        XHR.open("POST", url);
+        XHR.send(data);
+      }
     },
     toHome() {
       let t = confirm("确认要返回首页吗？");
@@ -353,12 +377,18 @@ export default {
       this.$refs.arrow.style.backgroundPosition = "0";
     }
   },
-  mounted() {}
+  created() {
+    this.checkHospital();
+  }
 };
 </script>
 
 <style lang='scss' scoped>
 self-input {
+  z-index: 2;
+}
+.el-select {
+  width: 100%;
   z-index: 2;
 }
 .regist-page {
@@ -384,10 +414,10 @@ self-input {
   top: 50px;
   display: grid;
   grid-template-columns: 110px 330px;
-  grid-template-rows: repeat(9, 60px) 300px 80px;
+  grid-template-rows: repeat(10, 60px) 300px 80px;
   width: 490px;
-  height: 950px;
-  padding-top:10px;
+  height: 1000px;
+  padding-top: 10px;
   border-radius: 5px;
   background: #fff;
   opacity: 0.9;

@@ -26,6 +26,9 @@
             <td>医生等级：{{msg.level}}</td>
             <td>医院：{{msg.hospital}}</td>
           </tr>
+          <tr>
+            <td>科室：{{msg.department}}</td>
+          </tr>
         </table>
       </div>
     </div>
@@ -67,7 +70,8 @@ export default {
             name: res.data[1],
             tel: res.data[2],
             level: res.data[3],
-            hospital: res.data[4]
+            hospital: res.data[4],
+            department:res.data[5]
           };
         }
         const date = new Date();
@@ -132,6 +136,6 @@ export default {
   }
 }
 .doctor-msg {
-  height: 100px;
+  height: 140px;
 }
 </style>
