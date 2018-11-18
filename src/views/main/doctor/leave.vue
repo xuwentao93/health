@@ -49,6 +49,7 @@
 
 <script>
 import { leave, checkIfLeave, overAdvance } from "@/api/doctor";
+import { year, month, day } from "@/config";
 export default {
   data() {
     return {
@@ -122,9 +123,6 @@ export default {
         alert("请假时间不能为空！");
         return;
       }
-      const date = new Date();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
       if (
         this.overMonth < month ||
         (this.overMonth == month && this.overDay < day)
@@ -152,9 +150,6 @@ export default {
     },
     checkIfLeave() {
       //检测医生是否请假，同时如果日期已经超过请假日期，医生显示为不请假。
-      const date = new Date();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
       checkIfLeave({
         username: this.$store.state.user.user,
         month,
@@ -206,8 +201,8 @@ export default {
             alert("延长请假时间成功!");
             this.extend = false;
             this.checkIfLeave();
-            this.overMonth = ""
-            this.overDay = ""
+            this.overMonth = "";
+            this.overDay = "";
           }
         })
         .catch(err => console.log(err));

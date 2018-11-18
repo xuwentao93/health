@@ -16,6 +16,11 @@ export default new Router({
       component: () => import('@/views/regist')
     },
     {
+      path:"/forget",
+      name:'forget',
+      component:()=>import('@/views/forget')
+    },
+    {
       path: '/main',
       name: 'main',
       component: () => import('@/views/main'),
@@ -23,42 +28,42 @@ export default new Router({
         {
           path: '/main/selfMsg',
           name: 'selfMsg',
-          component: () => import('@/components/selfMsg')
+          component: () => import('@/views/main/selfMsg')
         },
         {
           path: '/main/email',
           name: 'email',
-          component: () => import('@/components/boss/email')
+          component: () => import('@/views/main/boss/email')
         },
         {
           path: '/main/cure',
           name: 'cure',
-          component: () => import('@/components/doctor/cure')
+          component: () => import('@/views/main/doctor/cure')
         },
         {
           path: '/main/leave',
           name: 'leave',
-          component: () => import('@/components/doctor/leave')
+          component: () => import('@/views/main/doctor/leave')
         },
         {
           path: '/main/medical',
           name: 'medical',
-          component: () => import('@/components/doctor/medical')
+          component: () => import('@/views/main/doctor/medical')
         },
         {
           path: '/main/examination',
           name: 'examination',
-          component: () => import('@/components/custom/examination')
+          component: () => import('@/views/main/custom/examination')
         },
         {
           path: 'sick',
           name: 'sick',
-          component: () => import('@/components/custom/sick')
+          component: () => import('@/views/main/custom/sick')
         },
         {
           path: '/main/appointment',
           name: 'appointment',
-          component: () => import('@/components/custom/appointment')
+          component: () => import('@/views/main/custom/appointment')
         }
       ]
     },

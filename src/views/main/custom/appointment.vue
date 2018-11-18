@@ -45,7 +45,7 @@ import {
   checkAppointment
 } from "@/api/custom";
 import { looseEqual } from "@/utils";
-import { timeList, year, month, day } from "@/config";
+import { timeList, month, day } from "@/config";
 import { valid } from "semver";
 export default {
   components: {
@@ -127,11 +127,11 @@ export default {
       this.doctor = "";
       this.date = "";
       this.time = "";
+      this.department = "";
     },
     checkValidTime() {
       this.time = "";
       const date = new Date();
-      const month = date.getMonth() + 1;
       let day = date.getDate();
       if (this.date == "明天") day++;
       checkValidTime({
@@ -178,9 +178,27 @@ export default {
     },
     submitAppointment() {
       const date = new Date();
-      const month = date.getMonth() + 1;
       let day = date.getDate();
       if (this.date == "明天") day++;
+      if (this.department == "") {
+        alert("未选择科室！");
+        return;
+      } else if (this.city == "") {
+        alert("未选择城市！");
+        return;
+      } else if (this.hospital == "") {
+        alert("未选择医院！");
+        return;
+      } else if (this.doctor == "") {
+        alert("未选择医生！");
+        return;
+      } else if (this.date == "") {
+        alert("未选择日期！");
+        return;
+      } else if (this.time == "") {
+        alert("未选择时间！");
+        return;
+      }
       let checkAppointment = confirm("确认要提交吗?");
       if (!checkAppointment) return;
       appointment({

@@ -21,7 +21,7 @@
         <el-button type='primary' class='login-button' @click='login'>登录</el-button>
         <div>
           <router-link to='/regist' class='regist'>注册</router-link>
-          <a href="#" class='forget'>忘记密码</a>
+          <router-link to='/forget' class='forget'>忘记密码</router-link>
         </div>
         <div>
           <el-button type='success' class='doctor-regist'>

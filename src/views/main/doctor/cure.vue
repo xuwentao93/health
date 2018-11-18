@@ -1,16 +1,16 @@
 <template>
   <div class="main">
-    <!-- <span class="username">患者用户名：</span>
+    <span class="username">患者用户名：</span>
     <self-input style='width:100px;height:24px;margin-bottom:20px;margin-right:20px;' v-model='username'>
     </self-input>
     <el-button type='primary' size='small' @click='checkCustom()'>检查用户</el-button>
     <span v-if='userInfo.name'>姓名：{{userInfo.name}}</span>
     <span v-if='userInfo.idnumber' class='idnumber'>身份证号码：{{userInfo.idnumber}}</span>
     <span v-if='errMsg' class='g-red'>用户不存在！</span>
-    <span class='g-red'>{{nameErr}}</span> -->
-    选择时间段：<el-select v-model="time">
+    <span class='g-red'>{{nameErr}}</span>
+    <!-- 选择时间段：<el-select v-model="time">
       <el-option v-for="time in timeList" :key='time' :value='time'></el-option>
-    </el-select>
+    </el-select> -->
     <textarea cols="60" rows="10" placeholder="病人病情" v-model='illness' ref="textarea"></textarea>
     <span class='illnessErr'>{{illnessErr}}</span>
     <table>
@@ -58,7 +58,7 @@ import selfInput from "@/components/selfInput";
 import { medicine, cureConclusion, checkCustom } from "@/api/doctor";
 import { setTimeout } from "timers";
 import { arrToObj } from "@/utils/arrs";
-import { timeList } from "@/config";
+import { timeList, year, month, day } from "@/config";
 export default {
   components: {
     selfData,
@@ -214,9 +214,9 @@ export default {
         username: this.username,
         conclusion: this.conclusion,
         illness: this.illness,
-        year: date.getFullYear(),
-        month: date.getMonth() + 1,
-        day: date.getDate() < 10 ? "0" + date.getDate() : date.getDate(),
+        year,
+        month,
+        day: day < 10 ? "0" + date.getDate() : date.getDate(),
         hour: date.getHours() < 10 ? "0" + date.getHours() : date.getHours(),
         minute:
           date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()

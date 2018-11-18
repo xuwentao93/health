@@ -26,6 +26,10 @@
                 <self-input v-model='id' @change='checkId'></self-input>
                 <span class="warn">{{idErr}}</span>
             </div>
+            <div><span class="g-red">*</span>滑块验证：</div>
+            <div>
+              <self-slide></self-slide>
+            </div>
             <div><span class='g-red'>*</span>手机号码：</div>
             <div>
                 <self-input v-model='phone' @change='checkPhone'></self-input>
@@ -54,9 +58,11 @@ import {
 } from "@/api/login";
 import { mapMutations } from "vuex";
 import selfInput from "@/components/selfInput";
+import selfSlide from "@/components/selfSlide";
 export default {
   components: {
-    selfInput
+    selfInput,
+    selfSlide
   },
   data() {
     return {
@@ -154,7 +160,7 @@ export default {
       if (this.phone == "") {
         this.phoneErr = "手机号不能为空！";
         return;
-      } else if (!this.phoneErr) return;
+      } else if (this.phoneErr) return;
       else if (this.phoneErr == "") {
         let t = Math.floor(Math.random() * 10000);
         if (t < 10) t = "000" + t;
@@ -271,7 +277,7 @@ self-input {
   grid-template-columns: 110px 330px;
   grid-template-rows: repeat(6, 60px);
   width: 490px;
-  height: 500px;
+  height: 560px;
   border-radius: 5px;
   background: #fff;
   opacity: 0.9;

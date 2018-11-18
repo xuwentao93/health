@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import top from "@/components/main/top";
-import leftMenu from "@/components/main/left-menu";
-import basic from "@/components/main/basic";
+import top from "@/views/main/main/top";
+import leftMenu from "@/views/main/main/left-menu";
+import basic from "@/views/main/main/basic";
 export default {
   components: {
     top,

@@ -56,16 +56,7 @@
       </div>
       <div><span class="g-red">*</span>滑块验证：</div>
       <div>
-        <!-- tabindex 用于tab切换，能让div被focus选中(css可以添加相对的伪类) -->
-        <div class="cube" ref='cube' @mousedown="slide" tabindex="111" @mouseenter='arrowChangeBlue' 
-        @mouseout.capture='arrowChangeWhite'> <!-- 添加.capture 让事件在捕获执行 -->
-          <i class="arrow-right" ref='arrow' @mouseenter='arrowChangeBlue' @mouseout='arrowChangeBlue'>
-            <div class="check-circle" v-if='!slideController'>
-          <i class="fa fa-check"></i>
-        </div>
-          </i>
-        </div>
-        <div class="slide" ref='slide'></div>
+        <self-slide></self-slide>
       </div>
       <div>
         <span class="g-red">*</span><span>医师证明：</span>
@@ -96,9 +87,11 @@ import {
 import { mapMutations } from "vuex";
 import { setInterval } from "timers";
 import selfInput from "@/components/selfInput";
+import selfSlide from "@/components/selfSlide";
 export default {
   components: {
-    selfInput
+    selfInput,
+    selfSlide
   },
   data() {
     return {
@@ -124,11 +117,11 @@ export default {
       img: undefined,
       imgsrc: null,
       imgErr: "",
-      slideController: true,
       hospitals: [],
       departments: ["骨科", "外科", "内科", "神经科", "皮肤科"],
       departmentErr: "",
-      department: ""
+      department: "",
+      // slideController: true
     };
   },
   methods: {
@@ -267,6 +260,9 @@ export default {
       else if (!this.img) this.imgErr = "图片还未上传！";
       else if (this.checkIdentify != this.identify)
         this.identifyErr = "验证码错误！";
+      // else if (this.slideController) {
+      //   alert("请将滑块拖动到最右边加以验证！");
+      // }
       if (
         this.userErr ||
         this.phoneErr ||
@@ -277,7 +273,8 @@ export default {
         this.nameErr ||
         this.hospitalErr ||
         this.imgErr ||
-        this.departmentErr
+        this.departmentErr ||
+        this.slideController
       )
         return;
       let data = new FormData(); //formdata 可以上传文件
@@ -336,45 +333,6 @@ export default {
     closeImg() {
       this.img = "";
       this.$refs.img.value = "";
-    },
-    slide(e) {
-      if (this.slideController == false) return; //滑块到底部事件跳出
-      let startX = e.clientX;
-      let slide = this.$refs.slide;
-      let cube = this.$refs.cube;
-      let startLeft = cube.offsetLeft;
-      let max = slide.offsetWidth - cube.offsetWidth + 1;
-      document.onmousemove = e => {
-        //document效果会更好
-        if (cube.style.left == max + "px") {
-          cube.style.backgroundColor = "#52ccba";
-          cube.style.cursor = "not-allowed";
-          this.$refs.arrow.style.color = "#fff";
-          this.slideController = false;
-          this.$refs.arrow.style.backgroundImage = "none";
-          return;
-        }
-        let left = Math.min(max, Math.max(0, startLeft + (e.clientX - startX))); //防止左右划出边界
-        cube.style.left = left + "px";
-
-        window.getSelection().removeAllRanges();
-        document.onmouseup = () => {
-          document.onmousemove = null;
-        };
-      };
-    },
-    arrowChangeBlue() {
-      if (!this.slideController) return;
-      const bg = require("./blue-arrow.png");
-      this.$refs.arrow.style.backgroundImage = `url('${bg}')`;
-      this.$refs.arrow.style.backgroundPosition = "0 1px";
-    },
-    arrowChangeWhite() {
-      if (document.activeElement === this.$refs.cube || !this.slideController)
-        return;
-      const bg = require("./arrow.png");
-      this.$refs.arrow.style.backgroundImage = `url('${bg}')`;
-      this.$refs.arrow.style.backgroundPosition = "0";
     }
   },
   created() {
@@ -425,7 +383,7 @@ self-input {
     position: relative;
     margin: 0;
     text-align: right;
-    line-height: 60px;
+    line-height: 45px;
   }
 }
 .identifying {
@@ -450,71 +408,6 @@ self-input {
   position: relative;
   top: 20px;
   right: 60px;
-}
-.cube,
-.slide {
-  position: absolute;
-  top: 12px;
-  left: 0;
-  height: 40px;
-  border: 1px solid #dcdfe6;
-}
-.cube {
-  z-index: 2;
-  width: 12%;
-  background: #fff;
-  color: #222;
-  cursor: pointer;
-  transition: background-color 0.2s linear;
-  &:hover {
-    background: rgb(44, 143, 250);
-    .arrow-right {
-      color: #fff;
-    }
-  }
-  &:focus {
-    outline: none;
-    border: 1px solid transparent;
-    background: rgb(44, 143, 250);
-    .arrow-right {
-      color: #fff;
-      background: url("./blue-arrow.png") no-repeat;
-      background-size: 100% 100%;
-    }
-  }
-}
-.arrow-right {
-  position: absolute;
-  top: 9px;
-  left: 8px;
-  display: inline-block;
-  width: 24px;
-  height: 20px;
-  color: #222;
-  background: url("./arrow.png") no-repeat;
-  background-size: 100% 100%;
-  transition: background-image 0.2s linear;
-}
-.slide {
-  top: -28px;
-  width: 100%;
-  background: #e4e7ed;
-}
-.check-circle {
-  z-index: 5;
-  position: absolute;
-  // left: 32px;
-  top: -20px;
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  line-height: 24px !important;
-  text-align: center !important;
-  border-radius: 12px;
-  background: #52ccba;
-  .fa-check {
-    color: #fff;
-  }
 }
 .prove {
   border: 1px dotted #000;

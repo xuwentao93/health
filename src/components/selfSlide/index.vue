@@ -35,11 +35,8 @@ export default {
           this.slideController = false
           return
         }
-        let left = Math.min(
-          max,
-          Math.max(-1, startLeft + (e.clientX - startX))
-        ); // 防止左右划出边界
-        cube.style.left = left + 'px'
+        let left = Math.min(max,Math.max(-1, startLeft + (e.clientX - startX)))// 防止左右划出边界
+        cube.style.left = left + "px"
 
         window.getSelection().removeAllRanges()
         document.onmouseup = () => {
@@ -52,9 +49,6 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.slide {
-  margin: 300px;
-}
 .slide {
   position: relative;
   width: 330px;
@@ -71,7 +65,7 @@ export default {
     border: 1px solid #e4e7eb;
     border-radius: 3px;
     text-align: center;
-    line-height: 45px !important;
+    line-height: 45px;
     background: #fff;
     outline: none;
     transition: background-color 0.2s linear;
