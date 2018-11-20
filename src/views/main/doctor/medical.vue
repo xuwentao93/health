@@ -44,10 +44,10 @@ export default {
       this.queryMedical(page);
     },
     moveLast() {
-      this.queryMedical(--page);
+      this.queryMedical(--this.page);
     },
     moveNext() {
-      this.queryMedical(++page);
+      this.queryMedical(++this.page);
     }
   },
   created() {

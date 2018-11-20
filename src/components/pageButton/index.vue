@@ -74,7 +74,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 .last,
 .next {
   border-color: #dcdfd6;
@@ -99,5 +99,10 @@ export default {
 .nextFont {
   color: #c0c4cc;
   border-color: #c0c4cc;
+  cursor: not-allowed;
+  &:hover{
+    border:1px solid #c0c4cc;
+    color:#c0c4cc;
+  }
 }
 </style>

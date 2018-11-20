@@ -30,7 +30,6 @@ export default {
         page
       })
         .then(res => {
-          console.log(res.data)
           //this.medicalList = res.data;
           this.buttonLoop = res.data[res.data.length - 1];
           res.data.pop();
@@ -46,10 +45,10 @@ export default {
       this.querySick(page);
     },
     moveLast() {
-      this.querySick(--page);
+      this.querySick(--this.page);
     },
     moveNext() {
-      this.querySick(++page);
+      this.querySick(++this.page);
     }
   },
   created() {

@@ -45,8 +45,7 @@ import {
   checkAppointment
 } from "@/api/custom";
 import { looseEqual } from "@/utils";
-import { timeList, month, day } from "@/config";
-import { valid } from "semver";
+import { timeList, month, day, hour, minute } from "@/config";
 export default {
   components: {
     selfInput
@@ -74,9 +73,6 @@ export default {
     };
   },
   methods: {
-    test() {
-      console.log(1);
-    },
     selectHospital() {
       this.hospital = "";
       this.doctor = "";
@@ -140,6 +136,7 @@ export default {
         day
       })
         .then(res => {
+          console.log(res.data)
           this.FiltertimeList();
           this.timeControl = [];
           if (res.data == "ok") {
@@ -151,12 +148,12 @@ export default {
                 this.validTime[i * 21] + this.validTime[i * 21 + 1] == month &&
                 this.validTime[i * 21 + 2] + this.validTime[i * 21 + 3] == day
               ) {
-                let ss = "";
+                let checkTime = "";
                 for (let j = 4; j < 15; j++) {
-                  ss = ss + this.validTime[i * 21 + j];
+                  checkTime = checkTime + this.validTime[i * 21 + j];
                 }
                 this.timeList.forEach((item, index) => {
-                  if (item == ss) {
+                  if (item == checkTime) {
                     this.$set(
                       this.timeList,
                       index,
@@ -219,6 +216,7 @@ export default {
         doctor: this.doctor
       })
         .then(res => {
+          console.log(res.data);
           this.validTime = res.data;
         })
         .catch(err => {
@@ -234,8 +232,6 @@ export default {
         return this.timeList;
       } else if (this.date == "今天") {
         const date = new Date();
-        const hour = date.getHours();
-        const minute = date.getMinutes();
         this.timeList.forEach((item, index) => {
           //最迟提前5分钟预约。
           let t = +(String(item[0]) + String(item[1]));

@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style>
-@import './styles/index.css';
-@import "./styles/font.css";
+<style lang='scss'>
+@import './styles/index.css'; //修改默认样式。
+@import "./styles/font.css"; //引入字体。
 </style>

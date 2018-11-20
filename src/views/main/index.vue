@@ -1,5 +1,5 @@
 <template>
-    <div class="main">
+    <div class="main" :class='{opacity:$store.state.bg.bg}'>
         <left-menu class='left-menu'></left-menu>
         <basic class='basic'></basic>
         <top class='top'></top>
@@ -15,13 +15,16 @@ export default {
     top,
     basic,
     leftMenu
-  }
+  },
 };
 </script>
 
 <style scoped lang='scss'>
 .main{
   position: relative;
+}
+.opacity{
+  opacity: 0.7;
 }
 .top {
   position: fixed;
@@ -48,6 +51,6 @@ export default {
   top:60px;
   padding:20px 0 0 20%;
   min-height: calc(100vh - 60px);
-  background: #f1f1f1;
+  background: #fff;
 }
 </style>

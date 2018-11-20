@@ -16,9 +16,9 @@ export default new Router({
       component: () => import('@/views/regist')
     },
     {
-      path:"/forget",
-      name:'forget',
-      component:()=>import('@/views/forget')
+      path: '/forget',
+      name: 'forget',
+      component: () => import('@/views/forget')
     },
     {
       path: '/main',
@@ -51,9 +51,14 @@ export default new Router({
           component: () => import('@/views/main/doctor/medical')
         },
         {
+          path: '/main/check',
+          name: 'check',
+          component: () => import('@/views/main/doctor/check')
+        },
+        {
           path: '/main/examination',
           name: 'examination',
-          component: () => import('@/views/main/custom/examination')
+          component: () => import('@/views/main/examinationDoctor')
         },
         {
           path: 'sick',

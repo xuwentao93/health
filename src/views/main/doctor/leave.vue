@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class='out'>
     <div class="leave">
       <div v-if="!ifLeave">
         <h3>请填写请假的相关信息</h3>
@@ -114,7 +114,7 @@ export default {
     leave() {
       if (
         this.overMonth < this.startMonth ||
-        (this.overMonth == this.startMonth && this.startDay >= this.overDay)
+        (this.overMonth == this.startMonth && this.startDay > this.overDay)
       ) {
         alert("结束时间不能早于开始时间！");
         return;
@@ -225,6 +225,9 @@ export default {
 }
 .el-button {
   margin: 0 40px;
+}
+.out{
+  background: #f1f1f1;
 }
 .leave {
   width: 80%;

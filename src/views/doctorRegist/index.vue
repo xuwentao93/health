@@ -40,7 +40,8 @@
       </div>
       <div>
         <el-select v-model='department'>
-          <el-option v-for="department in departments" :key="department" :value="department"></el-option>
+          <el-option v-for="department in departments" :key="department[0]" :value="department[0]">
+          </el-option>
         </el-select>
         <span class="warn">{{departmentErr}}</span>
       </div>
@@ -81,8 +82,8 @@ import {
   checkUser,
   checkTel,
   doctorRegist,
-  registMsg,
-  checkHospital
+  checkHospital,
+  checkDepartment
 } from "@/api/login";
 import { mapMutations } from "vuex";
 import { setInterval } from "timers";
@@ -118,9 +119,9 @@ export default {
       imgsrc: null,
       imgErr: "",
       hospitals: [],
-      departments: ["骨科", "外科", "内科", "神经科", "皮肤科"],
+      departments: [],
       departmentErr: "",
-      department: "",
+      department: ""
       // slideController: true
     };
   },
@@ -198,6 +199,13 @@ export default {
       checkHospital()
         .then(res => {
           this.hospitals = res.data;
+        })
+        .catch(err => console.log(err));
+    },
+    checkDepartment() {
+      checkDepartment()
+        .then(res => {
+          this.departments = res.data;
         })
         .catch(err => console.log(err));
     },
@@ -299,16 +307,14 @@ export default {
       data.append("url", imgurl);
       let url = "http://119.23.217.238/dist/saleApi/health/doctorregist.php";
       let XHR = new XMLHttpRequest();
-      if (XHR) {
-        XHR.onreadystatechange = () => {
-          if (XHR.readyState == 4 && XHR.status == 200) {
-            alert("审核申请成功，请等待通知！");
-            this.$router.push("/");
-          }
-        };
-        XHR.open("POST", url);
-        XHR.send(data);
-      }
+      XHR.onreadystatechange = () => {
+        if (XHR.readyState == 4 && XHR.status == 200) {
+          alert("审核申请成功，请等待通知！");
+          this.$router.push("/");
+        }
+      };
+      XHR.open("POST", url);
+      XHR.send(data);
     },
     toHome() {
       let t = confirm("确认要返回首页吗？");
@@ -337,6 +343,7 @@ export default {
   },
   created() {
     this.checkHospital();
+    this.checkDepartment();
   }
 };
 </script>

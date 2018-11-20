@@ -1,16 +1,22 @@
 <template>
   <div class="main">
-    <span class="username">患者用户名：</span>
-    <self-input style='width:100px;height:24px;margin-bottom:20px;margin-right:20px;' v-model='username'>
-    </self-input>
-    <el-button type='primary' size='small' @click='checkCustom()'>检查用户</el-button>
-    <span v-if='userInfo.name'>姓名：{{userInfo.name}}</span>
-    <span v-if='userInfo.idnumber' class='idnumber'>身份证号码：{{userInfo.idnumber}}</span>
-    <span v-if='errMsg' class='g-red'>用户不存在！</span>
-    <span class='g-red'>{{nameErr}}</span>
-    <!-- 选择时间段：<el-select v-model="time">
-      <el-option v-for="time in timeList" :key='time' :value='time'></el-option>
-    </el-select> -->
+    <span>选择时间段：</span>
+    <el-select v-model="time" @change='reserved'>
+    <el-option v-for="time in timeList" :key='time' :value='time'></el-option>
+    </el-select>
+    <span v-if='username'>用户名：{{username}}</span>
+    <span v-if='name'>姓名：{{name}}</span>
+    <span v-if='noCustom' class='g-red'>该时间段还没有病人预约！</span>
+    <!-- <span class='g-red'>{{nameErr}}</span> -->
+    <el-button class='hasCheck' @click='showCheck' type='primary' v-if='hasCheck'>
+      点击查看检查结果
+    </el-button>
+    <div class="examination" ref='examination'>
+      <img :src="examinationSrc" v-if='showExamination' class='examination-img'>
+      <el-button @click='closeExamination' type='danger' size='mini' class='close' v-if='showExamination'>
+        X
+      </el-button>
+    </div>
     <textarea cols="60" rows="10" placeholder="病人病情" v-model='illness' ref="textarea"></textarea>
     <span class='illnessErr'>{{illnessErr}}</span>
     <table>
@@ -55,7 +61,7 @@
 <script>
 import selfData from "@/components/selfData";
 import selfInput from "@/components/selfInput";
-import { medicine, cureConclusion, checkCustom } from "@/api/doctor";
+import { medicine, cureConclusion, reserved, ifChecked } from "@/api/doctor";
 import { setTimeout } from "timers";
 import { arrToObj } from "@/utils/arrs";
 import { timeList, year, month, day } from "@/config";
@@ -70,36 +76,48 @@ export default {
       medicines: [],
       conclusion: [],
       illness: "",
-      userInfo: {
-        name: "",
-        idnumber: ""
-      },
-      errMsg: "",
+      name: "",
+      noCustom: false,
       nameErr: "",
       illnessErr: "",
       hidden: true,
       time: "",
-      timeList
+      timeList,
+      showExamination: false,
+      hasCheck: false,
+      examinationSrc: ""
     };
   },
   methods: {
-    checkCustom() {
-      checkCustom({
-        username: this.username
+    reserved() {
+      reserved({
+        doctor: this.$store.state.user.user,
+        time: this.time
       })
         .then(res => {
-          if (res.data == "没有对应的用户名") {
-            this.userInfo = "";
-            this.errMsg = "没有对应的用户名";
-            return;
+          if (res.data === "none") {
+            this.noCustom = true;
+            this.name = "";
+            this.username = "";
+          } else {
+            this.noCustom = false;
+            this.username = res.data[0];
+            this.name = res.data[1];
+            ifChecked({
+              username: this.username
+            })
+              .then(res => {
+                if (res.data === "none") {
+                  this.hasCheck = false;
+                  return;
+                }
+                this.hasCheck = true;
+                this.examinationSrc = `http://119.23.217.238/dist/saleApi/health/examination/${
+                  res.data[0]
+                }`;
+              })
+              .catch(err => console.log(err));
           }
-          this.errMsg = "";
-          this.nameErr = "";
-          const userInfo = {
-            idnumber: res.data[0][0],
-            name: res.data[0][1]
-          };
-          this.userInfo = userInfo;
         })
         .catch(err => console.log(err));
     },
@@ -172,13 +190,11 @@ export default {
       this.hidden = false;
       const num = this.$refs.medicineList.length / 10;
       this.$refs.medicineList[index * num].focus();
-      console.log(document.activeElement);
     },
     nextMedicine(n, index) {
       const num = this.$refs.medicineList.length / 10;
       if (index == num - 1) return;
       this.$refs.medicineList[n * num + index + 1].focus();
-      console.log(document.activeElement);
     },
     lastMedicine(n, index) {
       const num = this.$refs.medicineList.length / 10;
@@ -193,8 +209,8 @@ export default {
       document.getElementsByTagName("input")[index * 5 + 1].focus(); //让对应的输入框获得焦点。
     },
     cureConclusion() {
-      if (!this.userInfo.name) {
-        this.nameErr = "请校验用户名是否存在！";
+      if (!this.name) {
+        this.nameErr = "请选择病人！";
         return;
       } else {
         this.nameErr = "";
@@ -210,22 +226,32 @@ export default {
       const date = new Date();
       cureConclusion({
         doctor: this.$store.state.user.user,
-        name: this.userInfo.name,
+        name: this.name,
         username: this.username,
         conclusion: this.conclusion,
         illness: this.illness,
         year,
         month,
-        day: day < 10 ? "0" + date.getDate() : date.getDate(),
+        day: day < 10 ? "0" + day : day,
         hour: date.getHours() < 10 ? "0" + date.getHours() : date.getHours(),
         minute:
           date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
       })
         .then(res => {
+          console.log(res.data);
           alert("提交成功！");
           location.reload();
         })
         .catch(err => console.log(err));
+    },
+    showCheck() {
+      this.showExamination = true;
+      this.$store.state.bg.bg = true;
+      this.$refs.examination.style.opacity = "1 !important";
+    },
+    closeExamination(){
+      this.showExamination = false;
+      this.$store.state.bg.bg = false;
     }
   },
   created() {
@@ -248,8 +274,14 @@ export default {
 div {
   outline: none;
 }
+.el-select {
+  margin: 0 20px 20px 0;
+}
 .g-red {
   color: red;
+}
+.main {
+  background: #fff !important;
 }
 .username {
   color: #333;
@@ -263,6 +295,26 @@ div {
 .idnumber {
   position: relative;
   left: 15px;
+}
+.examination {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  height: 500px;
+  margin-left: -250px;
+  margin-top: -250px;
+  z-index: 10;
+  opacity: 1;
+  .examination-img{
+    width:500px;
+    height:500px;
+  }
+  .close{
+    position: absolute;
+    right:0;
+    top:0;
+  }
 }
 textarea {
   display: block;

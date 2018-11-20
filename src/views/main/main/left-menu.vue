@@ -34,11 +34,12 @@ export default {
     }
   },
   created() {
-    this.menus.forEach(item => {  //这个方法用于刷新的时候，子菜单的背景色不会褪去。
+    this.menus.forEach(item => {  // 这个方法用于刷新的时候，子菜单的背景色不会褪去。
       if (this.$route.name === item.url) {
-        this.$set(item, "selected", true);
+        this.$set(item, 'selected', true);
         return;
       }
+      else this.$set(item, 'selected', false)
     });
     if (this.$store.state.user.token == "boss") {
       showMsg()
