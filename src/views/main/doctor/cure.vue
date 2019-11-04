@@ -8,12 +8,12 @@
     <span v-if='name'>姓名：{{name}}</span>
     <span v-if='noCustom' class='g-red'>该时间段还没有病人预约！</span>
     <!-- <span class='g-red'>{{nameErr}}</span> -->
-    <el-button class='hasCheck' @click='showCheck' type='primary' v-if='hasCheck'>
+    <el-button class='hasCheck' @click='showCheck' type='primary' v-if='hasCheck' size="medium">
       点击查看检查结果
     </el-button>
-    <div class="examination" ref='examination'>
-      <img :src="examinationSrc" v-if='showExamination' class='examination-img'>
-      <el-button @click='closeExamination' type='danger' size='mini' class='close' v-if='showExamination'>
+    <div class="examination" ref='examination' v-if='showExamination'>
+      <img :src="examinationSrc" class='examination-img'>
+      <el-button @click='closeExamination' type='danger' size='mini' class='close'>
         X
       </el-button>
     </div>
@@ -38,7 +38,7 @@
               ref='medicine'>
               <div v-for='(medicine,index) in medicines' @keyup.down="nextMedicine(n-1,index)" 
               @keyup.up='lastMedicine(n-1,index)' :key='medicine.name' @click='selectName(medicine.name,n-1)' 
-              :tabindex="100+n*100+index" ref='medicineList' @keyup.enter='selectName(medicine.name,n-1)'
+              :tabindex="100 + n * 100 + index" ref='medicineList' @keyup.enter='selectName(medicine.name,n-1)'
                @blur='close2(n-1)'>
               {{medicine.name}}</div>
             </div>
@@ -64,6 +64,7 @@ import selfInput from "@/components/selfInput";
 import { medicine, cureConclusion, reserved, ifChecked } from "@/api/doctor";
 import { setTimeout } from "timers";
 import { arrToObj } from "@/utils/arrs";
+import { looseEqual} from "@/utils"
 import { timeList, year, month, day } from "@/config";
 export default {
   components: {
@@ -92,10 +93,13 @@ export default {
     reserved() {
       reserved({
         doctor: this.$store.state.user.user,
-        time: this.time
+        time: this.time,
+        month,
+        day
       })
         .then(res => {
           if (res.data === "none") {
+            console.log(1)
             this.noCustom = true;
             this.name = "";
             this.username = "";
@@ -107,12 +111,13 @@ export default {
               username: this.username
             })
               .then(res => {
-                if (res.data === "none") {
+                console.log(res.data)
+                if (looseEqual(res.data,[null,null])) {
                   this.hasCheck = false;
                   return;
                 }
                 this.hasCheck = true;
-                this.examinationSrc = `http://119.23.217.238/dist/saleApi/health/examination/${
+                this.examinationSrc = `http://101.200.149.75/api/health/examination/${
                   res.data[0]
                 }`;
               })
@@ -246,8 +251,7 @@ export default {
     },
     showCheck() {
       this.showExamination = true;
-      this.$store.state.bg.bg = true;
-      this.$refs.examination.style.opacity = "1 !important";
+      // this.$refs.examination.style.opacity = "1 !important";
     },
     closeExamination(){
       this.showExamination = false;
@@ -319,6 +323,7 @@ div {
 textarea {
   display: block;
   border-radius: 3px;
+  border:1px solid #dcdfe6
 }
 .illnessErr {
   display: block;

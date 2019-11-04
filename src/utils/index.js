@@ -40,3 +40,16 @@ export function looseEqual (a, b) { // 判断两个对象或者两个基本数�
     return false
   }
 }
+
+export function deepCopy(p, c) {　　　　//实现深拷贝
+  var c = c || {};　　//let会暂时性死区　　
+  for(let i in p) {　　　　　　
+      if(typeof p[i] === 'object') {　　　　　　　　
+          c[i] = (p[i].constructor === Array) ? [] : {};　　　　　　　　
+          deepCopy(p[i], c[i]);　　　　　　
+      } else {　　　　　　　　　
+          c[i] = p[i];　　　　　　
+      }　　　　
+  }　　　　
+  return c;　　
+}

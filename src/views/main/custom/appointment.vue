@@ -67,7 +67,7 @@ export default {
       leaveMsg: "",
       validTime: "",
       timeControl: [],
-      departments: ["骨科", "外科", "内科", "神经科", "皮肤科"],
+      departments: ["骨科", "外科", "内科", "神经科", "皮肤科",'内分泌科'],
       department: "",
       noData: false
     };
@@ -82,8 +82,9 @@ export default {
         city: this.city
       })
         .then(res => {
+          // console.log(res.data)
           res.data.forEach((item, index) => {
-            if (index == 0) return;
+            if (index === 0) return;
             if (looseEqual(item, res.data[index - 1])) {
               res.data.splice(index, 1);
             }
@@ -115,7 +116,7 @@ export default {
           });
           this.doctors = res.data;
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log('appointment 118 line: ' + err));
     },
     reSelect() {
       this.city = "";
@@ -136,7 +137,7 @@ export default {
         day
       })
         .then(res => {
-          console.log(res.data)
+          // console.log(res.data)
           this.FiltertimeList();
           this.timeControl = [];
           if (res.data == "ok") {
@@ -177,22 +178,22 @@ export default {
       const date = new Date();
       let day = date.getDate();
       if (this.date == "明天") day++;
-      if (this.department == "") {
+      if (!this.department) {
         alert("未选择科室！");
         return;
-      } else if (this.city == "") {
+      } else if (!this.city) {
         alert("未选择城市！");
         return;
-      } else if (this.hospital == "") {
+      } else if (!this.hospital) {
         alert("未选择医院！");
         return;
-      } else if (this.doctor == "") {
+      } else if (!this.doctor) {
         alert("未选择医生！");
         return;
-      } else if (this.date == "") {
+      } else if (!this.date) {
         alert("未选择日期！");
         return;
-      } else if (this.time == "") {
+      } else if (!this.time) {
         alert("未选择时间！");
         return;
       }
@@ -205,6 +206,7 @@ export default {
         time: this.time,
         doctor: this.doctor
       }).then(res => {
+        // console.log(res)
         if (res.data == "ok") {
           alert("预约成功！");
           location.reload();
@@ -216,7 +218,7 @@ export default {
         doctor: this.doctor
       })
         .then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           this.validTime = res.data;
         })
         .catch(err => {
@@ -254,8 +256,8 @@ export default {
       }
     }
   },
-  computed: {},
-  mounted() {}
+  // computed: {},
+  // mounted() {}
 };
 </script>
 

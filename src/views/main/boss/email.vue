@@ -52,7 +52,7 @@ export default {
           );
           this.msgs = res.data;
           this.msgs.forEach(index => {
-            index.level = `http://119.23.217.238/dist/saleApi/health/img/${
+            index.level = `http://101.200.149.75/api/health/img/${
               index.level
             }`;
           });

@@ -1,11 +1,11 @@
 <template>
-    <div>
-        <div v-for="(medical,index) in medicalList" :key='medical' class='medical'>
-            {{index+1}}.<span v-html='medical'></span> <!-- 用v-html才能实现换行 -->
-        </div>
-        <page-button :buttonLoop="buttonLoop" class='pageButton' @changePage='changePage' 
-        @moveLast='moveLast' @moveNext='moveNext' :loading='loading'></page-button>
+  <div class='outer'>
+    <div v-for="(medical,index) in medicalList" :key='medical' class='medical'>
+        {{index+1}}.<span v-html='medical'></span> <!-- 用v-html才能实现换行 -->
     </div>
+    <page-button :buttonLoop="buttonLoop" class='pageButton' @changePage='changePage' 
+    @moveLast='moveLast' @moveNext='moveNext' :loading='loading'></page-button>
+  </div>
 </template>
 
 <script>
@@ -57,8 +57,14 @@ export default {
 </script>
 
 <style scoped>
+.outer{
+  width:80%;
+  margin:auto;
+}
 .medical {
-  width: 60%;
+  position: relative;
+  top: 100px;
+  width: 70%;
   margin-bottom: 20px;
   padding: 8px 6px;
   line-height: 30px;
@@ -66,5 +72,10 @@ export default {
   border-radius: 1px;
   background: #fff;
   box-shadow: 1px 2px 8px #ccc;
+}
+.pageButton{
+  position: relative;
+  top: 100px;
+  /* left:16%; */
 }
 </style>

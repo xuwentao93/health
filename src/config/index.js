@@ -25,7 +25,11 @@ export const timeList = ['09:00~09:30', '09:30~10:00', '10:00~10:30', '10:30~11:
 const date = new Date()
 
 export const year = date.getFullYear()
-export const month = date.getMonth() + 1 < 10 ? '0' + date.getMonth() : date.getMonth()
+
+export const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+
 export const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+
 export const hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+
 export const minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()

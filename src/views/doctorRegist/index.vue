@@ -305,10 +305,11 @@ export default {
       data.append("hospital", hospital);
       data.append("level", level);
       data.append("url", imgurl);
-      let url = "http://119.23.217.238/dist/saleApi/health/doctorregist.php";
+      let url = "http://101.200.149.75/api/health/doctorregist.php";
       let XHR = new XMLHttpRequest();
       XHR.onreadystatechange = () => {
         if (XHR.readyState == 4 && XHR.status == 200) {
+          // console.log(XHR.responseText)
           alert("审核申请成功，请等待通知！");
           this.$router.push("/");
         }

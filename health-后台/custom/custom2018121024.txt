@@ -1,0 +1,4 @@
+时间：2018/11/12   10:24   主治医生：doctor
+<br/>病情：测试专用。
+<br/>药名：板蓝根   &nbsp&nbsp&nbsp用量：每天两次   &nbsp&nbsp&nbsp次数: 每次一包   &nbsp&nbsp&nbsp单价：12   &nbsp&nbsp&nbsp数量：2  &nbsp&nbsp&nbsp总价：24
+药名：羚翘解毒丸   &nbsp&nbsp&nbsp用量：每天一次   &nbsp&nbsp&nbsp次数: 每次一粒   &nbsp&nbsp&nbsp单价：100   &nbsp&nbsp&nbsp数量：1  &nbsp&nbsp&nbsp总价：100

@@ -26,6 +26,11 @@ export default {
     };
   },
   methods: {
+    test(){
+      function aaa(){
+
+      }
+    },
     checkSelect(index) {
       this.menus.forEach(value => {
         value.selected = false;

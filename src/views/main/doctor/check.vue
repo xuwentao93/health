@@ -37,7 +37,9 @@ export default {
     reserved() {
       reserved({
         doctor: this.$store.state.user.user,
-        time: this.time
+        time: this.time,
+        month,
+        day
       })
         .then(res => {
           if (res.data === "none") {

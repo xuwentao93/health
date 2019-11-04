@@ -228,7 +228,7 @@ export default {
               tel: +this.phone,
               number
             }).then(res => {
-              console.log(res.data);
+              // console.log(res);
               if (res.data == "success") {
                 alert("注册成功！");
                 this.setUser(this.username);
@@ -311,4 +311,6 @@ self-input {
   top: -10px;
   right: 70px;
 }
+
 </style>
+

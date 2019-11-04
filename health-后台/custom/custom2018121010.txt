@@ -1,0 +1,4 @@
+时间：2018/11/12   10:10   主治医生：doctor
+病情：测试专用。
+药名：才胡舒肝丸   &nbsp&nbsp&nbsp用量：每天两次   &nbsp&nbsp&nbsp次数: 每次1粒   &nbsp&nbsp&nbsp单价：30   &nbsp&nbsp&nbsp数量：1  &nbsp&nbsp&nbsp总价：30
+药名：板蓝根   &nbsp&nbsp&nbsp用量：每天三次   &nbsp&nbsp&nbsp次数: 每次一包   &nbsp&nbsp&nbsp单价：10   &nbsp&nbsp&nbsp数量：1  &nbsp&nbsp&nbsp总价：10

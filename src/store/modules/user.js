@@ -6,8 +6,8 @@ const user = {
     token: getToken()
   },
   getters: {
-    user: state => state.user,
-    token: state => state.token
+    // user: state => state.user,
+    // token: state => state.token
   },
   mutations: {
     setUser (state, user) {

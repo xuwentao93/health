@@ -1,7 +1,7 @@
 <template>
   <div class='out'>
     <div class="examination">
-      <span>请输入病人用户名:</span>
+      <span class='username'>请输入病人用户名:</span>
       <self-input v-model='username' @input='closeImg'></self-input>
       <el-button @click='selectChecked' type='primary'>查询检查内容</el-button>
       <span v-if='noCustom' class='g-red'>用户不存在或者没有预约任何检查！</span>
@@ -87,7 +87,7 @@ export default {
       data.append("checkImg",checkImg);
       data.append("url", imgurl);
       let url =
-        "http://119.23.217.238/dist/saleApi/health/submitExamination.php";
+        "http://101.200.149.75/api/health/submitExamination.php";
       let XHR = new XMLHttpRequest();
       XHR.onreadystatechange = () => {
         if (XHR.readyState == 4 && XHR.status == 200) {
@@ -130,6 +130,9 @@ export default {
     width: 200px;
     margin: 0 20px 0 5px;
   }
+}
+.username{
+  margin-left:200px;
 }
 .prove {
   position: relative;

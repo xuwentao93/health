@@ -1,11 +1,11 @@
 <template>
     <div class='slide' ref='slide'>
       <div class="cube" @mousedown="move" tabindex="111" ref='cube'>
-        <span class="arrow-right">
+        
           <hr class='self-arrow' ref='arrow'>
           <div class='self-angel' ref='angel'></div>
           <i class="fa fa-check" v-if='!slideController'></i>
-        </span>
+      
       </div>
     </div>
 </template>
@@ -20,11 +20,11 @@ export default {
   methods: {
     move(e) {
       if (this.slideController == false) return; // 滑块到底部事件跳出
-      let startX = e.clientX
+      let startX = e.clientX // 触发事件的时候鼠标的X轴位置。
       let slide = this.$refs.slide
       let cube = this.$refs.cube
-      let startLeft = cube.offsetLeft
-      let max = slide.offsetWidth - cube.offsetWidth + 1
+      let startLeft = cube.style.left == '' ? -1 : parseFloat(cube.style.left);
+      let max = slide.offsetWidth - cube.offsetWidth + 1 //padding + border + width = offsetWidth
       document.onmousemove = e => {
         // document效果会更好
         if (cube.style.left == max + 'px') {

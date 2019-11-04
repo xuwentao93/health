@@ -1,0 +1,6 @@
+时间：2018/11/12   10:28   &nbsp&nbsp&nbsp主治医生：doctor
+<br/>病情：测试专用。
+<br/>药名：板蓝根   &nbsp&nbsp&nbsp用量：每天一次   &nbsp&nbsp&nbsp次数: 每次一包   &nbsp&nbsp&nbsp单价：12   &nbsp&nbsp&nbsp数量：1  &nbsp&nbsp&nbsp总价：12
+<br/>药名：六神丸   &nbsp&nbsp&nbsp用量：每天两次   &nbsp&nbsp&nbsp次数: 每次两粒   &nbsp&nbsp&nbsp单价：25   &nbsp&nbsp&nbsp数量：10  &nbsp&nbsp&nbsp总价：250
+<br/>药名：志柏地黄丸   &nbsp&nbsp&nbsp用量：每天三次   &nbsp&nbsp&nbsp次数: 每次三粒   &nbsp&nbsp&nbsp单价：14   &nbsp&nbsp&nbsp数量：5  &nbsp&nbsp&nbsp总价：70
+<br/>

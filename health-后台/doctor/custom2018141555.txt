@@ -1,0 +1,5 @@
+时间：2018/11/14   15:55   &nbsp&nbsp&nbsp病人：张大爷
+<br/>   &nbsp&nbsp&nbsp病情：头晕。头痛。
+<br/>药名：天麻头痛片   &nbsp&nbsp&nbsp用量：每天1次   &nbsp&nbsp&nbsp次数: 每次1包   &nbsp&nbsp&nbsp单价：100   &nbsp&nbsp&nbsp数量：1  &nbsp&nbsp&nbsp总价：100
+<br/>药名：才胡舒肝丸   &nbsp&nbsp&nbsp用量：每天3次   &nbsp&nbsp&nbsp次数: 每次3包   &nbsp&nbsp&nbsp单价：100   &nbsp&nbsp&nbsp数量：10  &nbsp&nbsp&nbsp总价：1000
+<br/>
